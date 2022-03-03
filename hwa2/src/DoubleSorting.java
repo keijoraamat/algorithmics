@@ -111,14 +111,20 @@ public class DoubleSorting {
       if (a.length < 2) return;
       for (int i = 1; i < a.length; i++) {
          double b = a[i];
-         double insPos = binarySearch(a, 0, i-1, b);
-         int j;
-         for (j = i - 1; j >= insPos; j--) {
-            if (a[j] <= b)
-               break;
-            a[j + 1] = a[j];
+         double temp = a[i];
+         //double insPos = binarySearch(a, 0, i-1, b);
+         int insPos = binarySearch(a, 0, i, b);
+         if (insPos < i){
+            System.arraycopy(a, insPos, a, insPos + 1, i -insPos);
+            a[insPos] = temp;
          }
-         a[j + 1] = b;
+//         int j;
+//         for (j = i - 1; j >= insPos; j--) {
+//            if (a[j] <= b)
+//               break;
+//            a[j + 1] = a[j];
+//         }
+//         a[j + 1] = b;
       }
    }
 
@@ -133,15 +139,25 @@ public class DoubleSorting {
     * @return int The position of @param key in @param a
     */
    public static int binarySearch(double[] a, int start, int end, double key){
-      while (start <= end) {
-         int mid = start + (end - start) /2;
-         if (key < a[mid]) {
-            end = mid -1;
-         } else {
-            start = mid + 1;
-         }
+      if (start == end){
+         return start;
       }
-      return start;
+      int mid = start + (end - start) /2;
+      if (key > a[mid]){
+         return binarySearch(a, mid +1, end, key);
+      } else if (key < a[mid]) {
+         return binarySearch(a, start, mid, key);
+      }
+      return mid;
+//      while (start <= end) {
+//         int mid = start + (end - start) /2;
+//         if (key < a[mid]) {
+//            end = mid -1;
+//         } else {
+//            start = mid + 1;
+//         }
+//      }
+//      return start;
    }
 
    /**
